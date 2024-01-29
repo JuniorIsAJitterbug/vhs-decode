@@ -1,0 +1,53 @@
+name: "Build Windows release"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-windows-binary:
+    name: Build Windows binary with PyInstaller
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          vsversion: 17.6
+
+      - name: Install Python modules
+        run: |
+          python -m venv .venv
+          .\.venv\Scripts\Activate.ps1
+          pip install .
+
+      - name: Build Cython modules
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          pip install -r ./requirements.txt
+          pip install setuptools Cython
+          python setup.py build_ext --inplace
+
+      - name: Build Windows binary
+        run: |
+          .\.venv\Scripts\Activate.ps1
+          pip install pyinstaller
+
+          pyinstaller --onefile --name decode `
+          --collect-all samplerate --collect-all pyhht --collect-all matplotlib `
+          decode.py
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-binary
+          path: dist/decode.exe
+          if-no-files-found: error
