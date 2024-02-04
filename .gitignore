@@ -86,3 +86,8 @@ ui_*.h
 # vscode related thingss
 .vscode/
 .theia/
+
+# nix related things
+.devenv
+.direnv
+build2
