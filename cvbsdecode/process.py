@@ -4,6 +4,7 @@ import numpy as np
 import scipy.signal as sps
 
 from collections import namedtuple
+from contextlib import suppress
 import itertools
 
 import lddecode.core as ldd
@@ -674,6 +675,10 @@ class CVBSDecodeInner(ldd.RFDecode):
             not rf_options.get("rhs_hsync", False),
             rf_options.get("skip_hsync_refine", False),
         )
+
+        with suppress(ImportError):
+            from _version import version as version_commit
+            self.commit = version_commit
 
     @property
     def options(self):

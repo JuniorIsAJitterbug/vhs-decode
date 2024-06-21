@@ -92,4 +92,4 @@ ui_*.h
 vhsdecode/*.c
 
 # auto-generated version file
-vhsdecode/_version.py
+_version.py

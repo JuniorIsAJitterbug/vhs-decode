@@ -4,6 +4,12 @@ import plistlib
 from pathlib import Path
 from shutil import move
 
+try:
+    from _version import version_tuple
+    version = f"{version_tuple[0]}.{version_tuple[1]}.{version_tuple[2]}"
+except ImportError:
+    version = "0.0.0"
+
 print("Building macOS binary version")
 
 PyInstaller.__main__.run(
@@ -29,7 +35,7 @@ with Path("dist/vhs-decode.app/Contents/Info.plist").open(mode="rb+") as file:
 
     # update binary location
     plist["CFBundleExecutable"] = "decode"
-    #plist["CFBundleShortVersionString"] = version
+    plist["CFBundleShortVersionString"] = version
     file.seek(0)
     file.write(plistlib.dumps(plist))
     file.truncate()

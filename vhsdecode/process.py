@@ -6,6 +6,7 @@ import threading
 import traceback
 import scipy.signal as sps
 from collections import namedtuple
+from contextlib import suppress
 
 import lddecode.core as ldd
 
@@ -153,6 +154,10 @@ class VHSDecode(ldd.LDdecode):
             self.outfile_chroma = None
 
         self.debug_plot = debug_plot
+
+        with suppress(ImportError):
+            from _version import version as version_commit
+            self.commit = version_commit
 
         # Needs to be overridden since this is overwritten for 405-line.
         # self.output_lines = (self.rf.SysParams["frame_lines"] // 2) + 1

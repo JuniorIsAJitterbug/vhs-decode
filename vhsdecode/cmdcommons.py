@@ -5,6 +5,11 @@ from typing import Optional
 import lddecode.utils as lddu
 import sys
 
+try:
+    from _version import version
+except ImportError:
+    version = "unknown"
+
 DDD_FREQ = 40
 CXADC_FREQ = (8 * 315.0) / 88.0  # 28.636363636
 CXADC_FREQ_HIGH = 3150.0 / 88.0  # 35.795454545
@@ -159,6 +164,12 @@ def common_parser_cli(meta_title, default_threads=DEFAULT_THREADS + 1):
         nargs="?",
         default=DEFAULT_OUTPUT_FILENAME,
         action=TestOutputFile,
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=version,
+        help="show version and exit"
     )
     # help="Disable AGC (deprecated, already disabled by default)
     parser.add_argument(

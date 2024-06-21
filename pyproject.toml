@@ -40,7 +40,7 @@ hifi-decode = "vhsdecode.hifi.main:main"
 Homepage = "https://www.domesday86.com"
 
 [tool.setuptools_scm]
-write_to = "vhsdecode/_version.py"
+write_to = "_version.py"
 local_scheme = "no-local-version"
 
 [tool.setuptools.package-data]
