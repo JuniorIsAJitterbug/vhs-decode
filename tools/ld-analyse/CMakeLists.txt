@@ -44,6 +44,13 @@ target_link_libraries(ld-analyse PRIVATE
     lddecode-library lddecode-chroma
 )
 
+if(APPLE)
+    target_link_libraries(ld-analyse PRIVATE
+        Qt::DBus
+    )
+endif()
+
+
 if(WIN32)
     target_compile_definitions(ld-analyse PRIVATE
         NOMINMAX
