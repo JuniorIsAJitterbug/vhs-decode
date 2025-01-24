@@ -14,7 +14,7 @@ env:
   FLALDF_FILE: "FlaLDF-v0.1-2-win-x64.zip"
   FLALDF_PATH: "flaldf"
   FLALDF_URL: "https://github.com/TokugawaHeavyIndustries/FlaLDF/releases/download/v0.1b/FlaLDF-v0.1-2-win-x64.zip"
-  AAA_PATH : "AudioAudioAlign"
+  AAA_PATH: "vhs-decode-auto-audio-align_1.0.0"
   AAA_URL: "https://gitlab.com/wolfre/vhs-decode-auto-audio-align/-/jobs/6727665225/artifacts/raw/vhs-decode-auto-audio-align_1.0.0.zip"
 
 jobs:
@@ -95,6 +95,15 @@ jobs:
           New-Item -ItemType Directory -Path ${{ env.FLALDF_PATH }}
           Expand-Archive .\flaldf.zip -DestinationPath .\${{ env.FLALDF_PATH }}\
           Copy-Item -Path .\${{ env.FLALDF_PATH }}\* -Destination release\
+
+      - name: Download and copy AutoAudioAlign to release directory
+        run: |
+          Invoke-WebRequest "${{ env.AAA_URL }}" -OutFile aaa.zip
+          Expand-Archive .\aaa.zip -DestinationPath .
+          Copy-Item -Path .\${{ env.AAA_PATH }}\VhsDecodeAutoAudioAlign.exe -Destination release\
+          Copy-Item -Path .\${{ env.AAA_PATH }}\Binah.dll -Destination release\
+          Copy-Item -Path .\${{ env.AAA_PATH }}\LICENSE-app.txt -Destination release\LICENSES\copyright-vhsdecodeautoaudioalign
+          Copy-Item -Path .\${{ env.AAA_PATH }}\LICENSE-binah.txt -Destination release\LICENSES\copyright-binah
 
       # uncomment to compress release directory
       # this is not required when releasing as an artifact
